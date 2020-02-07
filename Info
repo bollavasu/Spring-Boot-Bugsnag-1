@@ -1,0 +1,43 @@
+
+https://docs.bugsnag.com/platforms/java/spring/
+
+1)Add the dependency in pom.xml
+	<dependency>
+		<groupId>com.bugsnag</groupId>
+		<version>[3.0,4.0)</version>
+		<artifactId>bugsnag-spring</artifactId>
+	</dependency>
+	
+2)Create a Configuration class for Bugsnag
+
+	import org.springframework.context.annotation.Bean;
+	import org.springframework.context.annotation.Configuration;
+	import org.springframework.context.annotation.Import;
+	import com.bugsnag.BugsnagSpringConfiguration;
+	import com.bugsnag.Bugsnag;
+
+	@Configuration
+	@Import(BugsnagSpringConfiguration.class)
+	public class BugsnagConfig {
+		@Bean
+		public Bugsnag bugsnag() {
+			return new Bugsnag("BUGSNAG-API-KEY");
+		}
+	}
+	
+3)Inject the Bugsnag bean in our Controller and use it
+
+    @Autowired
+    private Bugsnag bugsnag;
+	
+	bugsnag.notify(new Exception("Hello Bugsnag"));
+	
+4)Build, Deploy the application and test it
+
+	mvn clean install
+
+	mvn spring-boot:run
+
+	http://localhost:8080/
+	
+5)Go to Bugsnag Dashboard and check our Exception message
